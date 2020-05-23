@@ -1,0 +1,299 @@
+%%% Преамбула %%%
+
+\usepackage{fontspec}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{pdfpages}
+
+\usepackage[europeanresistors,americaninductors,
+            americancurrents,americanvoltage]{circuitikz}
+
+
+
+%
+% Шрифты
+%
+\defaultfontfeatures{Ligatures=TeX}
+\newfontfamily{\cyrillicfont}{Tinos}
+\newfontfamily{\cyrillicfontrm}{Tinos}
+\newfontfamily{\cyrillicfonttt}{Cousine}
+\newfontfamily{\cyrillicfontsf}{Arimo}
+
+% Красная строка после заголовка
+%%\usepackage{indentfirst}
+
+% Русский язык
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+
+\usepackage{amssymb,amsfonts,amsmath} % Математика
+\numberwithin{equation}{section} % Формула вида секция.номер
+
+\renewcommand{\footnotesize}{\small}
+
+
+% Оформление библиографии и подрисуночных записей через точку
+\makeatletter
+\renewcommand*{\@biblabel}[1]{\hfill#1.}
+\renewcommand*\l@section{\@dottedtocline{1}{1em}{1em}}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}} % Формат рисунка секция.номер
+\renewcommand{\thetable}{\thesection.\arabic{table}} % Формат таблицы секция.номер
+\def\redeflsection{\def\l@section{\@dottedtocline{1}{0em}{10em}}}
+\makeatother
+
+% Полуторный межстрочный интервал
+%%\renewcommand{\baselinestretch}{1.4}
+\setlength{\parskip}{3ex}
+\setlength{\parindent}{0cm} % Абзацный отступ
+
+\sloppy
+\hyphenpenalty=1000
+\clubpenalty=10000
+\widowpenalty=10000
+
+% Отступы у страниц
+\usepackage{geometry}
+%\geometry{left=3.0cm}
+%\geometry{right=1.0cm}
+%\geometry{top=2.5cm}
+%\geometry{bottom=2.5cm}
+\geometry{left=3cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+
+%
+% Списки
+%
+%\usepackage{enumerate} Если вдруг сломается что-то
+\usepackage{enumitem}
+% TODO: Проверить topsep vs nolistsep
+\setlist[enumerate,itemize]{nolistsep,topsep=0pt,leftmargin=7mm,parsep=0.5cm}
+
+%%\makeatletter
+%%\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+%%\makeatother
+%%\setlist{nolistsep} % Нет отступов между пунктами списка
+%%\renewcommand{\labelitemi}{--} % Маркет списка --
+%%\renewcommand{\labelenumi}{\asbuk{enumi})} % Список второго уровня
+%%\renewcommand{\labelenumii}{\arabic{enumii})} % Список третьего уровня
+
+
+
+%
+% Содержание
+%
+\usepackage{tocloft}
+\usepackage[dotinlabels]{titletoc}
+\renewcommand{\cfttoctitlefont}
+    {\normalfont\bfseries\hspace{0.38\textwidth}\MakeTextUppercase}
+\renewcommand{\cftsecfont}{\hspace{0pt}}
+% Точки для секций в содержании
+%%\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\renewcommand\cftsecpagefont{\mdseries}
+\setcounter{tocdepth}{3}
+
+
+
+%
+% Рисунки
+%
+
+\usepackage{graphicx}
+
+% Формат подрисуночных записей
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
+% Формат подрисуночных надписей
+\RequirePackage{caption}
+\DeclareCaptionLabelSeparator{defffis}{ }
+\captionsetup[figure]{justification=centering, labelsep=defffis, format=plain}
+\captionsetup[table]{justification=raggedright, labelsep=defffis, format=plain, singlelinecheck=false}
+\addto\captionsrussian{\renewcommand{\figurename}{Рис.}}
+
+% Пользовательские функции
+\newcommand{\addimg}[4]{ % Добавление одного рисунка
+    \begin{figure}
+        \centering
+        \includegraphics[width=#2\linewidth]{#1}
+        \caption{#3} \label{#4}
+    \end{figure}
+}
+\newcommand{\addimghere}[4]{ % Добавить рисунок непосредственно в это место
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#2\linewidth]{#1}
+        \caption{#3} \label{#4}
+    \end{figure}
+}
+\newcommand{\addimgherev}[5]{ % Добавить рисунок непосредственно в это место
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#3\linewidth]{#1}
+        \includegraphics[width=#3\linewidth]{#2}
+        \caption{#4} \label{#5}
+    \end{figure}
+}
+\newcommand{\addtwoimghere}[5]{ % Вставка двух рисунков
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#2\linewidth]{#1}
+        \hfill
+        \includegraphics[width=#3\linewidth]{#2}
+        \caption{#4} \label{#5}
+    \end{figure}
+}
+\newcommand{\addimgapp}[2]{ % Это костыль для приложения Б
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{#1}
+        \caption*{#2}
+    \end{figure}
+}
+\newcommand{\addcircform}[5]{
+    \hspace*{-1cm}%
+    \begin{minipage}{#4\textwidth}
+        \addimghere{#1}{}{#2}{3}
+        \vspace{0.3cm}
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}{#5\textwidth}
+        #3
+        \vspace{3.5cm}%
+    \end{minipage}
+}
+
+
+
+%
+% Таблицы
+%
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+
+% Хаки для таблиц
+\newcommand{\centmultirow}[3]{%
+    \multicolumn{1}{|c|}{\multirow{#1}{#2}{\centering #3}}%
+}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcommand{\inputtabhere}[3]{%
+    \begin{table}[h]
+        \renewcommand{\arraystretch}{1.30}
+        \renewcommand{\tabularxcolumn}[1]{m{##1}}
+        \input{#1}
+        \caption{#2}
+        \label{#3}
+    \end{table}
+}
+
+
+
+%
+% Секции
+%
+
+% Заголовки секций в оглавлении в верхнем регистре
+\usepackage{textcase}
+\makeatletter
+\let\oldcontentsline\contentsline
+\def\contentsline#1#2{
+    \expandafter\ifx\csname l@#1\endcsname\l@section
+        \expandafter\@firstoftwo
+    \else
+        \expandafter\@secondoftwo
+    \fi
+    {\oldcontentsline{#1}{#2}}
+    {\oldcontentsline{#1}{#2}}
+}
+\makeatother
+
+% Оформление заголовков
+\usepackage[compact,explicit]{titlesec}
+\titleformat{\section}{}{}{0pt}
+    {\centering\textbf{\thesection.\space\MakeTextUppercase{#1}}}
+\titleformat{\subsection}[block]{\vspace{1em}}{}{0pt}
+    {\centering\textbf{\thesubsection.\space#1}}
+\titleformat{\subsubsection}[block]{\vspace{1em}\normalsize}{}{0pt}
+    {\centering\textbf{\thesubsubsection.\space#1\vspace{1em}}}
+\titleformat{\paragraph}[block] {\normalsize}{}{12.5mm}
+    {\MakeTextUppercase{#1}}
+
+% Секции без номеров (введение, заключение...), вместо section*{}
+\newcommand{\anonsection}[1]{
+    \phantomsection % Корректный переход по ссылкам в содержании
+    \paragraph{\normalfont\bfseries\centerline{{#1}}\vspace{1.5em}}
+    \addcontentsline{toc}{section}{#1}
+}
+
+% Секции для приложений
+\newcommand{\appsection}[1]{
+    \phantomsection
+    \paragraph{\centerline{{#1}}}
+    \addcontentsline{toc}{section}{\uppercase{#1}}
+}
+
+
+
+%
+% Библиография
+%
+\makeatletter
+\renewenvironment{thebibliography}[1]
+    {\section*{\refname}
+        \list{\@biblabel{\@arabic\c@enumiv}}
+           {\settowidth\labelwidth{\@biblabel{#1}}
+            \leftmargin\labelsep
+            \itemindent 16.7mm
+            \@openbib@code
+            \usecounter{enumiv}
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}
+        }
+        \setlength{\itemsep}{0pt}
+    }
+\makeatother
+
+
+
+%
+% Остальное
+%
+
+% Гиперссылки
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks, urlcolor={black},
+    linkcolor={black}, citecolor={black}, filecolor={black},
+    pdfauthor={Репин Степан},
+    pdftitle={Курсовая работа по ЭО}
+}
+
+\usepackage{listings} % Оформление исходного кода
+\lstset{
+    basicstyle=\small\ttfamily, % Размер и тип шрифта
+    breaklines=true, % Перенос строк
+    tabsize=2, % Размер табуляции
+    literate={--}{{-{}-}}2 % Корректно отображать двойной дефис
+}
+
+% Простой текст в формулах
+\newcommand{\tc}[1]{\text{#1}}
+% Единицы измерения
+\newcommand{\un}[1]{\tc{\ \ #1}}
+
+% Различные физические обозначения.
+\newcommand{\Lap}[0]{\mathcal{L}}
+\newcommand{\ILap}[0]{\Lap^{-1}}
+\newcommand{\Hev}[0]{\delta_1}
+
+% Настройка CircuiTikz
+\ctikzset{voltage/distance from node=1cm}
+\ctikzset{bipoles/thickness=1}
+
+\setcounter{page}{3} % Начало нумерации страниц
+
