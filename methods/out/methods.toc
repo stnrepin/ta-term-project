@@ -1,2 +1,0 @@
-\selectlanguage *{russian}
-\contentsfinish 
