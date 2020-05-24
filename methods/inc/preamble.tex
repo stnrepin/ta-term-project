@@ -69,7 +69,7 @@
 %\usepackage{enumerate} Если вдруг сломается что-то
 \usepackage{enumitem}
 % TODO: Проверить topsep vs nolistsep
-\setlist[enumerate,itemize]{nolistsep,topsep=0pt,leftmargin=7mm,parsep=0.5cm}
+\setlist[enumerate,itemize]{nolistsep,topsep=-2mm,leftmargin=7mm}%,parsep=0.3cm}
 
 %%\makeatletter
 %%\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
@@ -180,6 +180,7 @@
     \multicolumn{1}{|c|}{\multirow{#1}{#2}{\centering #3}}%
 }
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash} X }
 
 \newcommand{\inputtabhere}[3]{%
     \begin{table}[h]

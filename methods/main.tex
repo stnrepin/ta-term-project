@@ -1,6 +1,11 @@
 \documentclass[a4paper,14pt]{extarticle}
 \input{inc/preamble}
 
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+\usepackage{diagbox}
+
 \begin{document}
 
 \input{inc/titlepage}
@@ -11,6 +16,9 @@
 \renewcommand*{\thepage}{\arabic{page}}
 
 \setcounter{page}{3}
+
+\input{inc/01-abstract-synthesis}
+\input{inc/02-structural-synthesis}
 
 \end{document}
 

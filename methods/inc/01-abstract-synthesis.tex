@@ -1,0 +1,83 @@
+% vim: set textwidth=120:
+
+\section{Абстрактный синтез}
+
+Будем использовать следующие алфавиты:
+\[
+    \begin{array}{c lc l }
+        &A_\tc{вх}  &=& \left\{ 0, 1, 2, 3, \$ \right\} \\
+        &B_\tc{вых} &=& \left\{ 0, 1, 2, 3, \tc{i} \right\}
+    \end{array}
+\]
+
+\textcolor{red}{Составим информативное дерево}
+
+Построим таблицу входов и выходов для автомата Мили:
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{|C|C|C|C|C|}
+        \hline
+            & $q_0$ &  $q_1$ &  $q_2$ &  $q_3$ \\
+        \hline
+        0   & \slashbox{$q_0$ }{i} & \slashbox{$q_1$}{i} & \slashbox{$q_2$}{i} & \slashbox{$q_3$ }{i} \\
+        \hline
+        1   & \slashbox{$q_1$ }{i} & \slashbox{$q_1$}{i} & \slashbox{$q_2$}{i} & \slashbox{$q_3$ }{i} \\
+        \hline
+        2   & \slashbox{$q_2$ }{i} & \slashbox{$q_2$}{i} & \slashbox{$q_2$}{i} & \slashbox{$q_3$ }{i} \\
+        \hline
+        3   & \slashbox{$q_3$ }{i} & \slashbox{$q_3$}{i} & \slashbox{$q_3$}{i} & \slashbox{$q_3$ }{i} \\
+        \hline
+        \$  & \slashbox{$q_0$ }{0} & \slashbox{$q_0$}{1} & \slashbox{$q_0$}{2} & \slashbox{$q_0$ }{3} \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+В соответствии с таблицей составим диаграмму автомата:
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=7cm,
+                    semithick]
+    \tikzstyle{every state}=[minimum size=1.7cm]
+
+    \node[state] (q2)                         {$q_2$};
+    \node[state] (q1) [left of=q2]            {$q_1$};
+    \node[state] (q3) [right of=q2]           {$q_3$};
+    \node[state] (q0) [above of=q2]           {$q_0$};
+
+    \path   (q0) edge [bend left=10]          node {$1  / \tc{i}$}      (q1)
+                 edge [bend left=25]          node {$2  / \tc{i}$}      (q2)
+                 edge [bend left=10]          node {$3  / \tc{i}$}      (q3)
+                 edge [loop left, above]      node {$0  / \tc{i}$}      (q0)
+                 edge [loop right, above]     node {$\$ / 0$}           (q0)
+
+            (q1) edge [bend left=10]          node {$\$ / 1$}           (q0)
+                 edge [bend left=10]          node {$2  / \tc{i}$}      (q2)
+                 edge [bend right=40,below]   node {$3  / \tc{i}$}      (q3)
+                 edge [loop below]            node {$0,1 / \tc{i}$}     (q1)
+
+            (q2) edge [bend left=25]          node {$\$ / 2$}           (q0)
+                 edge                         node {$3 / \tc{i}$}       (q3)
+                 edge [loop below]            node {$0,1,2 / \tc{i}$}   (q2)
+
+            (q3) edge [bend left=10]          node {$\$ / 3$}           (q0)
+                 edge [loop below]            node {$0,1,2,3 / \tc{i}$} (q3);
+
+\end{tikzpicture}
+%
+Минимизируем автомат Мили. Для этого найдем все эквивалентные состояния:
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{|C| C C C}
+        \cline{1-2}
+        $q_1$ & \multicolumn{1}{C|}{\large{$\times$}} &                                                                               \\
+        \cline{1-3}
+        $q_2$ & \multicolumn{1}{C|}{\large{$\times$}} & \multicolumn{1}{C|}{\large{$\times$}} &                                       \\
+        \cline{1-4}
+        $q_3$ & \multicolumn{1}{C|}{\large{$\times$}} & \multicolumn{1}{C|}{\large{$\times$}} & \multicolumn{1}{C|}{\large{$\times$}} \\
+        \hline
+              & \multicolumn{1}{C|}{$q_0$}            &  \multicolumn{1}{C|}{$q_1$}           & \multicolumn{1}{C|}{$q_2$}            \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Из таблица видно, что в автомате отсутствуют эквивалентные состояния, то есть он уже минимален.
+
