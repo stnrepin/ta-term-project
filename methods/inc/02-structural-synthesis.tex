@@ -1,2 +1,288 @@
+% vim: set textwidth=120:
+
 \section{Структурный синтез}
+
+Проведем структурный синтез получившегося автомата Мили в базисе
+$\left\{ \land, \lor, \lnot \right\}$ с использованием D-триггеров.
+
+Закодируем входы и выходы двоичными числами:
+
+\begin{table}[H]
+\newcolumntype{M}{>{\centering\arraybackslash} m{3cm} }
+\centering
+\begin{tabular}{|M|M|}
+    \hline
+    Вход & $x_2x_1x_0$ \\
+    \hline
+    0  & 000 \\
+    \hline
+    1  & 001 \\
+    \hline
+    2  & 010 \\
+    \hline
+    3  & 011 \\
+    \hline
+    \$ & 100 \\
+    \hline
+\end{tabular}
+\hfill
+\begin{tabular}{|M|M|}
+    \hline
+    Выход & $x_2x_1x_0$ \\
+    \hline
+    0 & 000 \\
+    \hline
+    1 & 001 \\
+    \hline
+    2 & 010 \\
+    \hline
+    3 & 011 \\
+    \hline
+    i & 100 \\
+    \hline
+\end{tabular}
+\end{table}
+
+Закодируем состояния автомата метод минимизирующий число переключений элементов
+памяти. Для этого сперва найдем вершину, имеющую наибольшую полустепень
+захода, а также построим таблицу, в ячейках которой запишем число ребер между
+$q_i$ и $q_j$:
+\begin{table}[H]
+\newcolumntype{M}{>{\centering\arraybackslash} m{1.5cm} }
+\centering
+\begin{tabular}{|M|M|}
+    \hline
+    Выход & $x_2x_1x_0$ \\
+    \hline
+    $q_0$ & 5 \\
+    \hline
+    $q_1$ & 3 \\
+    \hline
+    $q_2$ & 5 \\
+    \hline
+    $q_3$ & 7 \\
+    \hline
+\end{tabular}
+\hfill
+\begin{tabular}{|M|M|M|M|M|}
+    \hline
+          & $q_0$ & $q_1$ & $q_2$ & $q_3$ \\
+    \hline
+    $q_0$ &   2   &   2   &   2   &   2   \\
+    \hline
+    $q_1$ &   2   &   1   &   1   &   1   \\
+    \hline
+    $q_2$ &   2   &   2   &   3   &   1   \\
+    \hline
+    $q_3$ &   2   &   1   &   1   &   4   \\
+    \hline
+\end{tabular}
+\end{table}
+
+Из таблица видно, что вершина, имеющая наибольшую полустепень --- $q_3$:
+\[
+    q_3 \to 00
+\]
+Состояние наиболее связанное с $q_3$ --- $q_0$:
+\[
+    q_0 \to 01
+\]
+Состояние наиболее связанное с $\left\{ q_3, q_0\right\}$ --- $q_1$:
+
+\vspace{-1cm}%
+\begin{minipage}[t]{0.48\textwidth}
+    \begin{table}[H]
+        \centering
+        \begin{tabularx}{\textwidth}{|C|C|}
+            \hline
+            Выход & $2d_{10} + 1\cdot d_{31}$ \\
+            \hline
+            10 & 5 \\
+            \hline
+            11 & 4 \\
+            \hline
+        \end{tabularx}
+    \end{table}
+\end{minipage}
+\begin{minipage}[t]{0.48\textwidth}
+    \vspace{1cm}
+    \[
+        q_1 \to 11
+    \]
+\end{minipage}
+
+Оставшееся состояние --- $q_2$:
+\[
+    q_2 \to 10
+\]
+
+Построим таблицу входов и выходов для автомата Мили:
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|C|C|C|C|C|} \hline
+            & 01 &  11 &  10 &  00 \\
+        \hline
+        000 & \slashbox{01}{100} & \slashbox{11}{100} & \slashbox{10}{100} & \slashbox{00}{100} \\
+        \hline
+        001 & \slashbox{11}{100} & \slashbox{11}{100} & \slashbox{10}{100} & \slashbox{00}{100} \\
+        \hline
+        010 & \slashbox{10}{100} & \slashbox{10}{100} & \slashbox{10}{100} & \slashbox{00}{100} \\
+        \hline
+        011 & \slashbox{00}{100} & \slashbox{00}{100} & \slashbox{00}{100} & \slashbox{00}{100} \\
+        \hline
+        100 & \slashbox{01}{000} & \slashbox{01}{001} & \slashbox{01}{010} & \slashbox{01}{011} \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Теперь постоим таблицу переходов и выходов:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|C|CCC|C|CC|C|CC|C|CCC|CC|}
+    \hline
+    \small{Вх} & $x_2$ & $x_1$ & $x_0$ & $q_i$ & $Q_1$ & $Q_0$ & \small{Вых} & $y_2$ & $y_1$ & $y_0$ & $q_i'$ & $Q'_1$ & $Q'_0$
+                    & $D_1$ & $D_0$ \\
+    \hline
+    0  & 0 & 0 & 0   &   $q_3$ & 0 & 0   &   i & 1 & 0 & 0   &  $q_0$ & 0 & 0   &   0 & 0   \\
+    0  & 0 & 0 & 0   &   $q_0$ & 0 & 1   &   i & 1 & 0 & 0   &  $q_1$ & 0 & 1   &   0 & 1   \\
+    0  & 0 & 0 & 0   &   $q_2$ & 1 & 0   &   i & 1 & 0 & 0   &  $q_2$ & 1 & 0   &   1 & 0   \\
+    0  & 0 & 0 & 0   &   $q_1$ & 1 & 1   &   i & 1 & 0 & 0   &  $q_3$ & 1 & 1   &   1 & 1   \\
+    \hline
+    1  & 0 & 0 & 1   &   $q_3$ & 0 & 0   &   i & 1 & 0 & 0   &  $q_0$ & 0 & 0   &   0 & 0   \\
+    1  & 0 & 0 & 1   &   $q_0$ & 0 & 1   &   i & 1 & 0 & 0   &  $q_1$ & 1 & 1   &   1 & 1   \\
+    1  & 0 & 0 & 1   &   $q_2$ & 1 & 0   &   i & 1 & 0 & 0   &  $q_2$ & 1 & 0   &   1 & 0   \\
+    1  & 0 & 0 & 1   &   $q_1$ & 1 & 1   &   i & 1 & 0 & 0   &  $q_3$ & 1 & 1   &   1 & 1   \\
+    \hline
+    2  & 0 & 1 & 0   &   $q_3$ & 0 & 0   &   i & 1 & 0 & 0   &  $q_0$ & 0 & 0   &   0 & 0   \\
+    2  & 0 & 1 & 0   &   $q_0$ & 0 & 1   &   i & 1 & 0 & 0   &  $q_1$ & 1 & 0   &   1 & 0   \\
+    2  & 0 & 1 & 0   &   $q_2$ & 1 & 0   &   i & 1 & 0 & 0   &  $q_2$ & 1 & 0   &   1 & 0   \\
+    2  & 0 & 1 & 0   &   $q_1$ & 1 & 1   &   i & 1 & 0 & 0   &  $q_3$ & 1 & 0   &   1 & 0   \\
+    \hline
+    3  & 0 & 1 & 1   &   $q_3$ & 0 & 0   &   i & 1 & 0 & 0   &  $q_0$ & 0 & 0   &   0 & 0   \\
+    3  & 0 & 1 & 1   &   $q_0$ & 0 & 1   &   i & 1 & 0 & 0   &  $q_1$ & 0 & 0   &   0 & 0   \\
+    3  & 0 & 1 & 1   &   $q_2$ & 1 & 0   &   i & 1 & 0 & 0   &  $q_2$ & 0 & 0   &   0 & 0   \\
+    3  & 0 & 1 & 1   &   $q_1$ & 1 & 1   &   i & 1 & 0 & 0   &  $q_3$ & 0 & 0   &   0 & 0   \\
+    \hline
+    \$ & 1 & 0 & 0   &   $q_3$ & 0 & 0   &   3 & 0 & 1 & 1   &  $q_0$ & 0 & 1   &   0 & 1   \\
+    \$ & 1 & 0 & 0   &   $q_0$ & 0 & 1   &   0 & 0 & 0 & 0   &  $q_0$ & 0 & 1   &   0 & 1   \\
+    \$ & 1 & 0 & 0   &   $q_2$ & 1 & 0   &   2 & 0 & 1 & 0   &  $q_0$ & 0 & 1   &   0 & 1   \\
+    \$ & 1 & 0 & 0   &   $q_1$ & 1 & 1   &   1 & 0 & 0 & 1   &  $q_0$ & 0 & 1   &   0 & 1   \\
+    \hline
+    -  & 1 & 0 & 1   &   -     & - & -   &   - & - & - & -   &  -     & - & -   &   - & -   \\
+    -  & 1 & 1 & 0   &   -     & - & -   &   - & - & - & -   &  -     & - & -   &   - & -   \\
+    \hline
+    \multicolumn{16}{|c|}{\centering\Large{\ldots}} \\
+    \hline
+    -  & 1 & 1 & 1   &   -     & - & -   &   - & - & - & -   &  -     & - & -   &   - & -   \\
+    \hline
+\end{tabularx}
+\end{table}
+
+\newenvironment{nscenter}
+ {\parskip=0pt\par\nopagebreak\centering}
+ {\par\noindent\ignorespacesafterend}
+
+Проведем минимизацию полученных СДНФ с помощью карт Карно.
+
+\begin{table}[H]
+    \centering
+    \subfloat[\Large{$y_0$}]{
+    \begin{tabular}{|c|cccc|}
+        \hline
+        & 00 & 01 & 11 & 10 \\
+        \hline
+        000 & 1 & 1 & 1 & 1 \\
+        001 & 1 & 1 & 1 & 1 \\
+        011 & 1 & 1 & 1 & 1 \\
+        010 & 1 & 1 & 1 & 1 \\
+        110 & - & - & - & - \\
+        111 & - & - & - & - \\
+        101 & - & - & - & - \\
+        100 & 0 & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    }
+    \subfloat[\Large{$y_1$}]{
+    \begin{tabular}{|c|cccc|}
+        \hline
+        & 00 & 01 & 11 & 10 \\
+        \hline
+        000 & 0 & 0 & 0 & 0 \\
+        001 & 0 & 0 & 0 & 0 \\
+        011 & 0 & 0 & 0 & 0 \\
+        010 & 0 & 0 & 0 & 0 \\
+        110 & - & - & - & - \\
+        111 & - & - & - & - \\
+        101 & - & - & - & - \\
+        100 & 1 & 0 & 0 & 1 \\
+        \hline
+    \end{tabular}
+    }
+    \subfloat[\Large{$y_2$}]{
+    \begin{tabular}{|c|cccc|}
+        \hline
+        & 00 & 01 & 11 & 10 \\
+        \hline
+        000 & 0 & 0 & 0 & 0 \\
+        001 & 0 & 0 & 0 & 0 \\
+        011 & 0 & 0 & 0 & 0 \\
+        010 & 0 & 0 & 0 & 0 \\
+        110 & - & - & - & - \\
+        111 & - & - & - & - \\
+        101 & - & - & - & - \\
+        100 & 1 & 0 & 1 & 0 \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+\begin{table}[H]
+    \centering
+    \subfloat[\Large{$D_0$}]{
+    \begin{tabular}{|c|cccc|}
+        \hline
+        & 00 & 01 & 11 & 10 \\
+        \hline
+        000 & 0 & 0 & 1 & 1 \\
+        001 & 0 & 1 & 1 & 1 \\
+        011 & 0 & 0 & 0 & 0 \\
+        010 & 0 & 1 & 1 & 1 \\
+        110 & - & - & - & - \\
+        111 & - & - & - & - \\
+        101 & - & - & - & - \\
+        100 & 0 & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    }
+    \subfloat[\Large{$D_1$}]{
+    \begin{tabular}{|c|cccc|}
+        \hline
+        & 00 & 01 & 11 & 10 \\
+        \hline
+        000 & 0 & 1 & 1 & 0 \\
+        001 & 0 & 1 & 1 & 0 \\
+        011 & 0 & 0 & 0 & 0 \\
+        010 & 0 & 0 & 0 & 0 \\
+        110 & - & - & - & - \\
+        111 & - & - & - & - \\
+        101 & - & - & - & - \\
+        100 & 1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+Итоговая система логических уравнений:
+\[
+    \begin{array}{l c l c l c l c l}
+        D_0 &=& Q_0\Bar{x}_2\Bar{x}_1 &\lor& x_2 &&&& \\[3ex]
+        D_1 &=& Q_1\Bar{x}_2\Bar{x}_1 &\lor& Q_0\Bar{x}_2\Bar{x_1}\Bar{x}_0 &\lor&
+                Q_0x_1\Bar{x}_0 &\lor& Q_1x_1\Bar{x}_0 \\[3ex]
+            %&=& \Bar{x}_2\Bar{x}_1(Q_1 \lor Q_0x_0) \lor x_1\Bar{x}_0(Q_0 \lor Q_1) &&&&&& \\[5ex]
+        y_0 &=& \Bar{Q}_1\Bar{Q}_0x_2 &\lor& Q_1Q_0x_1 &&&&\\[3ex]
+        y_1 &=& \Bar{Q}_0x_2 &&&&&& \\[3ex]
+        y_2 &=& \Bar{x}_2    &&&&&&
+    \end{array}
+\]
+
+На основе этой системы можно построить логическую схему устройства:
+\addimghere{res/circuit.png}{1}{}{}
 
