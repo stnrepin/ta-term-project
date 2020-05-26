@@ -68,6 +68,5 @@ Input operator ""_i(char c);
 
 Output operator ""_o(char c);
 
-
 #endif // !MEALY_FSM_HPP
 

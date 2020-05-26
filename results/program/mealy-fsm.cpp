@@ -60,4 +60,3 @@ Input operator ""_i(char c) {
 Output operator ""_o(char c) {
     return Output { c };
 }
-
