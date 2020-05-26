@@ -128,6 +128,13 @@
         \caption{#3} \label{#4}
     \end{figure}
 }
+\newcommand{\addanonimghere}[4]{ % Добавить рисунок непосредственно в это место
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#2\linewidth]{#1}
+        \label{#4}
+    \end{figure}
+}
 \newcommand{\addimgherev}[5]{ % Добавить рисунок непосредственно в это место
     \begin{figure}[H]
         \centering

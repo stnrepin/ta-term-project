@@ -10,10 +10,56 @@
     \end{array}
 \]
 
-\textcolor{red}{Составим информативное дерево}
+Начнем с информативного дерева. Выпишем примеры работы автомата. Некоторые из них показаны в таблице:
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{0.5\textwidth}{|C|C|}
+        \hline
+        Вход & Выход \\
+        \hline
+        0 & i \\
+        \hline
+        1 & i \\
+        \hline
+        2 & i \\
+        \hline
+        3 & i \\
+        \hline
+        \$ & 0 \\
+        \hline
+        00 & ii \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+        03 & ii \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+        031 & iii \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+        031\$ & iii3 \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+        21\$3 & ii2i \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+        231\$ & iii3 \\
+        \hline
+        \multicolumn{2}{|c|}{\centering\Large{\ldots}} \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+На основе этих примеров построим информативное дерево. Ниже представлен общий вид такого дерева:
+
+\addimghere{res/tree.jpg}{1}{}{}
 
 Построим таблицу входов и выходов для автомата Мили:
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{|C|C|C|C|C|} \hline
             & $q_0$ &  $q_1$ &  $q_2$ &  $q_3$ \\
@@ -63,7 +109,7 @@
 \end{tikzpicture}
 %
 Минимизируем автомат Мили. Для этого найдем все эквивалентные состояния:
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{|C| C C C}
         \cline{1-2}
