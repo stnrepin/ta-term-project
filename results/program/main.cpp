@@ -52,7 +52,7 @@ int main(int argc, const char** argv) {
         }
     }
     else {
-        std::cout << "Enter input symbols (end with '$')";
+        std::cout << "Enter input symbols (end with '$')\n";
         char in;
         std::string fsm_in;
         int i = 1;

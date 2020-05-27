@@ -9,10 +9,6 @@
 struct ConnectedStates;
 
 struct State {
-    explicit State(const std::string& name)
-        : name(name)
-    { }
-
     State operator--(int);
 
     friend ConnectedStates operator>(State lhs, State rhs);
