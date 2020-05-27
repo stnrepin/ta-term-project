@@ -58,7 +58,7 @@ private:
     std::vector<Transition> transitions_;
 };
 
-State operator ""_s(const char* s, unsigned long n);
+State operator ""_s(const char* s, size_t n);
 
 Input operator ""_i(char c);
 

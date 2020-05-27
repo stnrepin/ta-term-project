@@ -66,10 +66,12 @@ int main(int argc, const char** argv) {
         auto out = fsm.Eval(fsm_in);
         if (!out.second) {
             std::cout << "Input is invalid\n";
-            return 0;
         }
-        std::cout << "Answer: " << out.first << '\n';
+        else {
+            std::cout << "Answer: " << out.first << '\n';
+        }
     }
 
+    system("pause");
     return 0;
 }

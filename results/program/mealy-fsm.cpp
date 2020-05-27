@@ -49,7 +49,7 @@ std::optional<Transition> MealyFsm::FindTransitionFor(const State& s, char sym) 
     return {};
 }
 
-State operator ""_s(const char* s, unsigned long n) {
+State operator ""_s(const char* s, size_t n) {
     return State { s };
 }
 
